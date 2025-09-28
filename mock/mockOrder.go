@@ -32,8 +32,8 @@ type OrderResponse struct {
 }
 
 // 模拟下单请求
-func MockOrder() (string, error) {
-	requestUrl := fmt.Sprintf("%s/robotapi/order/add", Url)
+func MockOrder(orderUrl string) (string, error) {
+	requestUrl := fmt.Sprintf("%s/robotapi/order/add", orderUrl)
 	request := &OrderRequest{
 		Dealer: "68c39717ceb6fa9a057abd00",
 		Products: []Product{
