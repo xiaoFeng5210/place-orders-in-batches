@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"order-mock/utils"
+
+	"go.uber.org/zap"
 )
 
 type Product struct {
@@ -48,28 +51,27 @@ func MockOrder(orderUrl string) (string, error) {
 	}
 	body, err := json.Marshal(request)
 	if err != nil {
-		fmt.Printf("Failed to marshal mock order request: %v", err)
 		return "", err
 	}
 	resp, err := http.Post(requestUrl, "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		fmt.Printf("Failed to post mock order request: %v", err)
+		utils.Logger.Error("请求直接失败", zap.Error(err))
 		return "", err
 	}
 	defer resp.Body.Close()
 	body, err = io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Printf("Failed to read response body: %v", err)
+		utils.Logger.Error("读取响应体失败", zap.Error(err))
 		return "", err
 	}
 	var orderResp OrderResponse
 	err = json.Unmarshal(body, &orderResp)
 	if err != nil {
-		fmt.Printf("Failed to unmarshal response body: %v", err)
+		utils.Logger.Error("解析响应体失败", zap.Error(err))
 		return "", err
 	}
 	if orderResp.Code != 0 {
-		fmt.Printf("Failed to mock order: %s", string(body))
+		utils.Logger.Error("mock order Code != 0", zap.String("response", string(body)))
 		return "", errors.New("mock order Code != 0")
 	}
 	return orderResp.Data.Id, nil
@@ -91,30 +93,30 @@ func MockCloseOrder(orderId string) error {
 	}
 	body, err := json.Marshal(request)
 	if err != nil {
-		fmt.Printf("Failed to marshal mock close order request: %v", err)
+		utils.Logger.Error("Failed to marshal mock close order request: %v", zap.Error(err))
 		return err
 	}
 
 	resp, err := http.Post(requestUrl, "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		fmt.Printf("Failed to post mock close order request: %v", err)
+		utils.Logger.Error("Failed to post mock close order request: %v", zap.Error(err))
 		return err
 	}
 	defer resp.Body.Close()
 	body, err = io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Printf("Failed to read response body: %v", err)
+		utils.Logger.Error("Failed to read response body: %v", zap.Error(err))
 		return err
 	}
 
 	var closeOrderResp CloseOrderResponse
 	err = json.Unmarshal(body, &closeOrderResp)
 	if err != nil {
-		fmt.Printf("Failed to unmarshal response body: %v", err)
+		utils.Logger.Error("Failed to unmarshal response body: %v", zap.Error(err))
 		return err
 	}
 	if closeOrderResp.Code != 0 {
-		fmt.Printf("Failed to mock close order: %s", string(body))
+		utils.Logger.Error("Failed to mock close order: %s", zap.String("response", string(body)))
 		return errors.New("mock close order Code != 0")
 	}
 	return nil
