@@ -38,6 +38,7 @@ type OrderResponse struct {
 
 var allNeedMockData = []OrderRequest{
 	{
+		// 如家酒店
 		Dealer: "68c39717ceb6fa9a057abd00",
 		Products: []Product{
 			{
