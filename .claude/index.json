@@ -1,0 +1,63 @@
+{
+  "timestamp": "2025-09-29T00:00:00.000Z",
+  "project_info": {
+    "name": "lebai-order-mock",
+    "type": "Go Application",
+    "description": "一个用于模拟餐厅订单下单和关闭流程的系统",
+    "language": "Go",
+    "go_version": "1.25.0"
+  },
+  "modules": [
+    {
+      "path": "/Users/xiaofeng/Documents/work/lebai/lebai-order-mock",
+      "name": "root",
+      "type": "main",
+      "description": "主应用程序入口和定时任务调度",
+      "entry_files": ["main.go"],
+      "key_files": ["go.mod", "go.sum"]
+    },
+    {
+      "path": "/Users/xiaofeng/Documents/work/lebai/lebai-order-mock/mock",
+      "name": "mock",
+      "type": "package",
+      "description": "订单模拟相关的核心业务逻辑",
+      "entry_files": ["mockOrder.go", "login.go", "util.go"],
+      "interfaces": ["MockAllAndClose", "MockOrder", "MockCloseOrder", "Login"]
+    },
+    {
+      "path": "/Users/xiaofeng/Documents/work/lebai/lebai-order-mock/utils",
+      "name": "utils",
+      "type": "package",
+      "description": "工具类包，主要提供日志功能",
+      "entry_files": ["zap.go"],
+      "interfaces": ["InitZap", "Logger"]
+    },
+    {
+      "path": "/Users/xiaofeng/Documents/work/lebai/lebai-order-mock/log",
+      "name": "log",
+      "type": "directory",
+      "description": "日志文件存储目录，按天分割",
+      "key_files": ["2025-09-28.log"]
+    }
+  ],
+  "dependencies": {
+    "github.com/joho/godotenv": "v1.5.1",
+    "github.com/lestrrat-go/file-rotatelogs": "v2.4.0+incompatible",
+    "github.com/lestrrat-go/strftime": "v1.1.1",
+    "github.com/pkg/errors": "v0.9.1",
+    "go.uber.org/multierr": "v1.10.0",
+    "go.uber.org/zap": "v1.27.0"
+  },
+  "coverage": {
+    "total_files": 9,
+    "scanned_files": 9,
+    "coverage_percentage": 100,
+    "gaps": []
+  },
+  "ignore_patterns": [
+    ".env",
+    "log/",
+    "main"
+  ],
+  "truncated": false
+}

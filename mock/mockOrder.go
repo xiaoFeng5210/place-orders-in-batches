@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"order-mock/utils"
 
+	"time"
+
 	"go.uber.org/zap"
 )
 
@@ -34,10 +36,8 @@ type OrderResponse struct {
 	Data OrderRespData `json:"data"`
 }
 
-// 模拟下单请求
-func MockOrder(orderUrl string) (string, error) {
-	requestUrl := fmt.Sprintf("%s/robotapi/order/add", orderUrl)
-	request := &OrderRequest{
+var allNeedMockData = []OrderRequest{
+	{
 		Dealer: "68c39717ceb6fa9a057abd00",
 		Products: []Product{
 			{
@@ -48,8 +48,29 @@ func MockOrder(orderUrl string) (string, error) {
 		},
 		Amount:  0,
 		PayType: "",
+	},
+	// TODO: 添加其他需要mock的数据
+}
+
+func MockAllAndClose(orderUrl string) {
+	for _, data := range allNeedMockData {
+		orderId, err := MockOrder(orderUrl, data)
+		if err != nil {
+			utils.Logger.Error("模拟下单失败！", zap.Error(err))
+			continue
+		}
+		time.Sleep(10 * time.Second)
+		err = MockCloseOrder(orderUrl, orderId)
+		if err != nil {
+			utils.Logger.Error("模拟关闭订单失败！", zap.Error(err))
+		}
 	}
-	body, err := json.Marshal(request)
+}
+
+// 模拟下单请求
+func MockOrder(orderUrl string, data OrderRequest) (string, error) {
+	requestUrl := fmt.Sprintf("%s/robotapi/order/add", orderUrl)
+	body, err := json.Marshal(data)
 	if err != nil {
 		return "", err
 	}
@@ -86,8 +107,8 @@ type CloseOrderResponse struct {
 }
 
 // 模拟订单制作完成
-func MockCloseOrder(orderId string) error {
-	requestUrl := fmt.Sprintf("%s/robotapi/order/close", Url)
+func MockCloseOrder(orderUrl, orderId string) error {
+	requestUrl := fmt.Sprintf("%s/robotapi/order/close", orderUrl)
 	request := &CloseOrderRequest{
 		Id: orderId,
 	}

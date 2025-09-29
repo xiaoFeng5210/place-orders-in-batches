@@ -26,13 +26,16 @@ func main() {
 		utils.Logger.Error("Failed to load .env file", zap.Error(err))
 	}
 	orderUrl := os.Getenv("ORDER_URL")
+	if orderUrl == "" {
+		utils.Logger.Fatal("ORDER_URL environment variable is required")
+	}
 	go func() {
 		for {
 			currentTime := time.Now()
 			if currentTime.Hour() == 8 && currentTime.Minute() == 10 {
 				for i := 0; i < MockCount; i++ {
 					utils.Logger.Info("开始下单")
-					handleMock(orderUrl)
+					mock.MockAllAndClose(orderUrl)
 				}
 				utils.Logger.Info("下单全部结束")
 			}
@@ -47,18 +50,18 @@ func main() {
 	http.ListenAndServe(":3031", nil)
 }
 
-func handleMock(orderUrl string) {
-	orderId, err := mock.MockOrder(orderUrl)
-	if err != nil {
-		return
-	}
-	time.Sleep(MockInterval)
-	if orderId != "" {
-		err := mock.MockCloseOrder(orderId)
-		if err != nil {
-			return
-		}
-	} else {
-		utils.Logger.Error("OrderId is empty")
-	}
-}
+// func handleMock(orderUrl string) {
+// 	orderId, err := mock.MockOrder(orderUrl)
+// 	if err != nil {
+// 		return
+// 	}
+// 	time.Sleep(MockInterval)
+// 	if orderId != "" {
+// 		err := mock.MockCloseOrder(orderId)
+// 		if err != nil {
+// 			return
+// 		}
+// 	} else {
+// 		utils.Logger.Error("OrderId is empty")
+// 	}
+// }
