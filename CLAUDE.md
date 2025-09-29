@@ -24,12 +24,11 @@ graph TD
     A --> D["log/"];
     B --> E["mockOrder.go"];
     B --> F["login.go"];
-    B --> G["util.go"];
-    C --> H["zap.go"];
-    D --> I["按天分割的日志文件"];
+    C --> G["zap.go"];
+    D --> H["按天分割的日志文件"];
 
     click E "#mock-package" "查看订单模拟模块"
-    click H "#utils-package" "查看工具类模块"
+    click G "#utils-package" "查看工具类模块"
 ```
 
 ## 模块索引
@@ -126,22 +125,55 @@ type Product struct {
     Name      string `json:"name"`
     Quantity  int    `json:"quantity"`
 }
+
+// 订单响应
+type OrderResponse struct {
+    Code int           `json:"code"`
+    Data OrderRespData `json:"data"`
+}
+
+type OrderRespData struct {
+    Id string `json:"_id"`
+}
+
+// 关闭订单请求
+type CloseOrderRequest struct {
+    Id string `json:"id"`
+}
+
+// 关闭订单响应
+type CloseOrderResponse struct {
+    Code int `json:"code"`
+}
 ```
 
 ### 常见操作
 - **修改模拟数据**：编辑 `mock/mockOrder.go` 中的 `allNeedMockData` 变量
-- **调整执行时间**：修改 `main.go` 中的时间检查逻辑
+- **调整执行时间**：修改 `main.go` 中的时间检查逻辑（目前设置为每天 8:10）
+- **修改模拟数量**：在 `main.go` 中调整 `MockCount` 常量（目前为 20 次）
+- **调整时间间隔**：在 `main.go` 中修改 `MockInterval` 常量（目前为 10 秒）
 - **查看运行日志**：检查 `log/` 目录下的日志文件
 - **修改日志配置**：编辑 `utils/zap.go`
+
+### 核心函数
+- `MockAllAndClose(orderUrl string)`：主要执行函数，遍历所有模拟数据进行下单和关闭
+- `MockOrder(orderUrl string, data OrderRequest)`：模拟下单，返回订单 ID
+- `MockCloseOrder(orderUrl, orderId string)`：模拟关闭指定订单
 
 ### 注意事项
 - 程序启动后会在 3031 端口提供 HTTP 服务（虽然没有路由处理）
 - 日志文件按天分割，最多保留 30 天
 - 订单 URL 通过环境变量配置，支持不同环境部署
+- 程序使用定时任务，每 2 秒检查一次时间，在 8:10 时执行模拟订单
+- 每次执行会创建 20 个订单，每个订单间隔 10 秒后自动关闭
+- 默认模拟数据中只包含一个订单类型，可以通过修改 `allNeedMockData` 添加更多
 
 ## 变更日志
 
 ### 最近更新
 - 添加了 Zap 日志框架并支持按天分割
-- 实现了定时任务调度功能
+- 实现了定时任务调度功能（每天 8:10 执行）
 - 完善了错误处理和日志记录
+- 实现了完整的订单模拟流程（下单 → 等待 → 关闭）
+- 支持批量订单处理（默认 20 个订单）
+- 添加了环境变量配置支持
