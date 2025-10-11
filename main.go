@@ -44,7 +44,7 @@ func main() {
 		}
 	}()
 
-	utils.Logger.Info("服务启动成功，端口: 3031")
+	utils.Logger.Info("服务启动成功, 2025/10/11, 端口: 3031")
 	utils.Logger.Info("环境变量", zap.String("ORDER_URL", orderUrl))
 	fmt.Println("服务启动成功，端口: 3031")
 	http.ListenAndServe(":3031", nil)
