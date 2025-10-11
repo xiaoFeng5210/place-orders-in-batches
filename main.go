@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	MockCount    = 20
-	MockInterval = 10 * time.Second
+	MockCount    = 18
+	MockInterval = 5 * time.Second
 )
 
 func main() {
@@ -49,19 +49,3 @@ func main() {
 	fmt.Println("服务启动成功，端口: 3031")
 	http.ListenAndServe(":3031", nil)
 }
-
-// func handleMock(orderUrl string) {
-// 	orderId, err := mock.MockOrder(orderUrl)
-// 	if err != nil {
-// 		return
-// 	}
-// 	time.Sleep(MockInterval)
-// 	if orderId != "" {
-// 		err := mock.MockCloseOrder(orderId)
-// 		if err != nil {
-// 			return
-// 		}
-// 	} else {
-// 		utils.Logger.Error("OrderId is empty")
-// 	}
-// }

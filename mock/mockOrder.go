@@ -50,7 +50,19 @@ var allNeedMockData = []OrderRequest{
 		Amount:  0,
 		PayType: "",
 	},
-	// TODO: 添加其他需要mock的数据
+
+	{
+		Dealer: "68db351696b56fcecafbc433",
+		Products: []Product{
+			{
+				ProductId: "68db479a96b56fcecafbc4a4",
+				Name:      "面条2",
+				Quantity:  1,
+			},
+		},
+		Amount:  0,
+		PayType: "",
+	},
 }
 
 func MockAllAndClose(orderUrl string) {
