@@ -45,3 +45,7 @@ func SaveOrderConfig(orderConfigs []OrderRequest) error {
 	}
 	return nil
 }
+
+func DeleteOrderConfigItem(orderConfigs []OrderRequest, dealerId string) error {
+
+}
