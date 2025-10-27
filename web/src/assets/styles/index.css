@@ -1,1 +1,55 @@
 @import "tailwindcss";
+
+/* Ant Design 样式重置 */
+.ant-layout-header {
+  padding: 0;
+  height: 64px;
+  line-height: 64px;
+}
+
+.ant-card {
+  border-radius: 8px;
+}
+
+.ant-card-head {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-modal {
+  border-radius: 8px;
+}
+
+.ant-btn {
+  border-radius: 6px;
+}
+
+.ant-input {
+  border-radius: 6px;
+}
+
+.ant-input-number {
+  border-radius: 6px;
+}
+
+/* 自定义样式 */
+.config-card-hover {
+  transition: all 0.3s ease;
+}
+
+.config-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .ant-layout-header .flex {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .ant-layout-content {
+    padding: 16px;
+  }
+}
