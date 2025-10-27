@@ -28,7 +28,6 @@ func CheckMockDataConfig() {
 
 		orderConfigs = jsonData
 		fmt.Println("CheckMockDataConfig", orderConfigs)
-
 		time.Sleep(5 * 60 * time.Second)
 	}
 }
@@ -36,6 +35,7 @@ func CheckMockDataConfig() {
 func LoopAndMock(orderUrl string) {
 	for {
 		currentTime := time.Now()
+		fmt.Printf("当前时间: %v:%v\n", currentTime.Hour(), currentTime.Minute())
 		if currentTime.Hour() == 7 && currentTime.Minute() == 50 {
 			if len(orderConfigs) > 0 {
 				for i := 0; i < MockCount; i++ {
