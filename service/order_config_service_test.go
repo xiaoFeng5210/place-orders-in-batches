@@ -33,5 +33,13 @@ func TestSaveOrderConfig(t *testing.T) {
 		t.Fatalf("SaveOrderConfig failed: %v", err)
 	}
 	t.Logf("SaveOrderConfig success! orderConfigs: %v", orderConfigs)
+}
 
+func TestDeleteOrderConfigItem(t *testing.T) {
+	orderConfigs, _ := LoadOrderConfig()
+	err := DeleteOrderConfigItem(orderConfigs, "68db351696b56fcecafbc99")
+	if err != nil {
+		t.Fatalf("DeleteOrderConfigItem failed: %v", err)
+	}
+	t.Logf("DeleteOrderConfigItem success!")
 }
