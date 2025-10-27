@@ -1,0 +1,26 @@
+[
+  {
+    "dealer": "68c39717ceb6fa9a057abd00",
+    "products": [
+      {
+        "product_id": "68c3e86dceb6fa9a057abfdc",
+        "name": "面条1",
+        "quantity": 1
+      }
+    ],
+    "amount": 0,
+    "pay_type": ""
+  },
+  {
+    "dealer": "68db351696b56fcecafbc4a4",
+    "products": [
+      {
+        "product_id": "68db479a96b56fcecafbc4a4",
+        "name": "面条2",
+        "quantity": 1
+      }
+    ],
+    "amount": 0,
+    "pay_type": ""
+  }
+]
