@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	handler "order-mock/handler/gin"
 	"order-mock/utils"
 
 	"order-mock/service"
@@ -28,6 +29,12 @@ func main() {
 	go service.LoopAndMock(orderUrl)
 
 	engine := gin.Default()
+
+	apiGroup := engine.Group("/api")
+
+	apiGroup.GET("/mock_config", handler.GetMockConfigHandler)
+	apiGroup.POST("/add_dealer", handler.AddDealerConfigHandler)
+	apiGroup.POST("/delete_dealer_config", handler.DeleteDealerConfigHandler)
 
 	err = engine.Run("0.0.0.0:3031")
 	if err != nil {

@@ -6,6 +6,8 @@ import (
 	"order-mock/model"
 	"order-mock/utils"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 var (
@@ -17,17 +19,27 @@ const (
 	MockInterval = 5 * time.Second
 )
 
+func RefreshOrderConfigs() ([]model.OrderRequest, error) {
+	jsonData, err := LoadOrderConfig()
+	if err != nil {
+		utils.Logger.Error("读取当前配置数据失败", zap.Error(err))
+		return nil, err
+	}
+	orderConfigs = jsonData
+	utils.Logger.Info("读取当前配置数据: ", zap.Any("orderConfigs", orderConfigs))
+	return orderConfigs, nil
+}
+
 func CheckMockDataConfig() {
 	for {
 		jsonData, err := LoadOrderConfig()
 		if err != nil {
-			fmt.Println("CheckMockDataConfig Error", err)
+			utils.Logger.Error("CheckMockDataConfig Error", zap.Error(err))
 			time.Sleep(5 * time.Second)
 			continue
 		}
-
 		orderConfigs = jsonData
-		fmt.Println("CheckMockDataConfig", orderConfigs)
+		utils.Logger.Info("读取当前配置数据: ", zap.Any("orderConfigs", orderConfigs))
 		time.Sleep(5 * 60 * time.Second)
 	}
 }

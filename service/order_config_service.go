@@ -8,6 +8,9 @@ import (
 
 	"order-mock/model"
 
+	"errors"
+
+	lo "github.com/samber/lo"
 	lom "github.com/samber/lo/mutable"
 	"go.uber.org/zap"
 )
@@ -24,13 +27,15 @@ func LoadOrderConfig() ([]model.OrderRequest, error) {
 		return nil, err
 	}
 
-	var orderConfigs []model.OrderRequest
-	err = json.Unmarshal(fileData, &orderConfigs)
+	var currentOrderConfigs []model.OrderRequest
+	err = json.Unmarshal(fileData, &currentOrderConfigs)
 	if err != nil {
 		return nil, err
 	}
+	// *更新全局变量
+	orderConfigs = currentOrderConfigs
 
-	return orderConfigs, nil
+	return currentOrderConfigs, nil
 
 }
 
@@ -41,7 +46,7 @@ func SaveOrderConfig(orderConfigs []model.OrderRequest) error {
 		return err
 	}
 
-	err = os.WriteFile("../mock_data_config.json", jsonData, 0644)
+	err = os.WriteFile("mock_data_config.json", jsonData, 0644)
 	if err != nil {
 		utils.Logger.Error("Failed to write order configs to file: %v", zap.Error(err))
 		return err
@@ -49,11 +54,37 @@ func SaveOrderConfig(orderConfigs []model.OrderRequest) error {
 	return nil
 }
 
-func DeleteOrderConfigItem(orderConfigs []model.OrderRequest, dealerId string) error {
-	kept := lom.Filter(orderConfigs, func(item model.OrderRequest) bool {
+func AddDealerConfig(newConfig model.OrderRequest) error {
+	currentOrderConfigs, err := LoadOrderConfig()
+	if err != nil {
+		return err
+	}
+
+	_, ok := lo.Find(currentOrderConfigs, func(item model.OrderRequest) bool {
+		return item.Dealer == newConfig.Dealer
+	})
+
+	if ok {
+		return errors.New("门店已存在")
+	}
+
+	currentOrderConfigs = append(currentOrderConfigs, newConfig)
+	err = SaveOrderConfig(currentOrderConfigs)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteOrderConfigItem(dealerId string) error {
+	readed, err := LoadOrderConfig()
+	if err != nil {
+		return err
+	}
+	kept := lom.Filter(readed, func(item model.OrderRequest) bool {
 		return item.Dealer != dealerId
 	})
-	err := SaveOrderConfig(kept)
+	err = SaveOrderConfig(kept)
 	if err != nil {
 		return err
 	}
