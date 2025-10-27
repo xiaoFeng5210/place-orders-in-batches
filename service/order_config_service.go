@@ -6,12 +6,14 @@ import (
 	"order-mock/utils"
 	"os"
 
+	"order-mock/model"
+
 	lom "github.com/samber/lo/mutable"
 	"go.uber.org/zap"
 )
 
-func LoadOrderConfig() ([]OrderRequest, error) {
-	jsonFile, err := os.Open("../mock_data_config.json")
+func LoadOrderConfig() ([]model.OrderRequest, error) {
+	jsonFile, err := os.Open("mock_data_config.json")
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +24,7 @@ func LoadOrderConfig() ([]OrderRequest, error) {
 		return nil, err
 	}
 
-	var orderConfigs []OrderRequest
+	var orderConfigs []model.OrderRequest
 	err = json.Unmarshal(fileData, &orderConfigs)
 	if err != nil {
 		return nil, err
@@ -32,7 +34,7 @@ func LoadOrderConfig() ([]OrderRequest, error) {
 
 }
 
-func SaveOrderConfig(orderConfigs []OrderRequest) error {
+func SaveOrderConfig(orderConfigs []model.OrderRequest) error {
 	jsonData, err := json.Marshal(orderConfigs)
 	if err != nil {
 		utils.Logger.Error("Failed to marshal order configs: %v", zap.Error(err))
@@ -47,8 +49,8 @@ func SaveOrderConfig(orderConfigs []OrderRequest) error {
 	return nil
 }
 
-func DeleteOrderConfigItem(orderConfigs []OrderRequest, dealerId string) error {
-	kept := lom.Filter(orderConfigs, func(item OrderRequest) bool {
+func DeleteOrderConfigItem(orderConfigs []model.OrderRequest, dealerId string) error {
+	kept := lom.Filter(orderConfigs, func(item model.OrderRequest) bool {
 		return item.Dealer != dealerId
 	})
 	err := SaveOrderConfig(kept)

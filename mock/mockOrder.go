@@ -11,36 +11,16 @@ import (
 
 	"time"
 
+	"order-mock/model"
+
 	"go.uber.org/zap"
 )
 
-type Product struct {
-	ProductId string `json:"product_id"`
-	Name      string `json:"name"`
-	Quantity  int    `json:"quantity"`
-}
-
-type OrderRequest struct {
-	Dealer   string    `json:"dealer"`
-	Products []Product `json:"products"`
-	Amount   float64   `json:"amount"`
-	PayType  string    `json:"pay_type"`
-}
-
-type OrderRespData struct {
-	Id string `json:"_id"`
-}
-
-type OrderResponse struct {
-	Code int           `json:"code"`
-	Data OrderRespData `json:"data"`
-}
-
-var allNeedMockData = []OrderRequest{
+var allNeedMockData = []model.OrderRequest{
 	{
 		// 如家酒店
 		Dealer: "68c39717ceb6fa9a057abd00",
-		Products: []Product{
+		Products: []model.Product{
 			{
 				ProductId: "68c3e86dceb6fa9a057abfdc",
 				Name:      "面条1",
@@ -53,7 +33,7 @@ var allNeedMockData = []OrderRequest{
 
 	{
 		Dealer: "68db351696b56fcecafbc433",
-		Products: []Product{
+		Products: []model.Product{
 			{
 				ProductId: "68db479a96b56fcecafbc4a4",
 				Name:      "面条2",
@@ -63,6 +43,23 @@ var allNeedMockData = []OrderRequest{
 		Amount:  0,
 		PayType: "",
 	},
+}
+
+func MockAllAndCloseWithConfig(orderUrl string, config []model.OrderRequest) {
+	if len(config) > 0 {
+		for _, data := range config {
+			orderId, err := MockOrder(orderUrl, data)
+			if err != nil {
+				utils.Logger.Error("模拟下单失败！", zap.Error(err))
+				continue
+			}
+			time.Sleep(10 * time.Second)
+			err = MockCloseOrder(orderUrl, orderId)
+			if err != nil {
+				utils.Logger.Error("模拟关闭订单失败！", zap.Error(err))
+			}
+		}
+	}
 }
 
 func MockAllAndClose(orderUrl string) {
@@ -81,7 +78,7 @@ func MockAllAndClose(orderUrl string) {
 }
 
 // 模拟下单请求
-func MockOrder(orderUrl string, data OrderRequest) (string, error) {
+func MockOrder(orderUrl string, data model.OrderRequest) (string, error) {
 	requestUrl := fmt.Sprintf("%s/robotapi/order/add", orderUrl)
 	body, err := json.Marshal(data)
 	if err != nil {
@@ -98,7 +95,7 @@ func MockOrder(orderUrl string, data OrderRequest) (string, error) {
 		utils.Logger.Error("读取响应体失败", zap.Error(err))
 		return "", err
 	}
-	var orderResp OrderResponse
+	var orderResp model.OrderResponse
 	err = json.Unmarshal(body, &orderResp)
 	if err != nil {
 		utils.Logger.Error("解析响应体失败", zap.Error(err))

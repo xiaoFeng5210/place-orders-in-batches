@@ -1,6 +1,9 @@
 package service
 
-import "testing"
+import (
+	"order-mock/model"
+	"testing"
+)
 
 func TestLoadOrderConfig(t *testing.T) {
 	orderConfigs, err := LoadOrderConfig()
@@ -16,9 +19,9 @@ func TestSaveOrderConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("LoadOrderConfig failed: %v", err)
 	}
-	orderConfigs = append(orderConfigs, OrderRequest{
+	orderConfigs = append(orderConfigs, model.OrderRequest{
 		Dealer: "68db351696b56fcecafbc99",
-		Products: []Product{
+		Products: []model.Product{
 			{
 				ProductId: "68db479a96b56fcecafbc480",
 				Name:      "测试食物",

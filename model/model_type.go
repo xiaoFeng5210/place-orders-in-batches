@@ -1,4 +1,4 @@
-package service
+package model
 
 type Product struct {
 	ProductId string `json:"product_id"`

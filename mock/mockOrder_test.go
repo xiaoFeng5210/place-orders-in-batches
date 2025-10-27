@@ -4,6 +4,8 @@ import (
 	"os"
 	"testing"
 
+	"order-mock/model"
+
 	"github.com/joho/godotenv"
 )
 
@@ -16,9 +18,9 @@ func TestMockOrder(t *testing.T) {
 	if orderUrl == "" {
 		t.Fatal("ORDER_URL environment variable is required")
 	}
-	orderId, err := MockOrder(orderUrl, OrderRequest{
+	orderId, err := MockOrder(orderUrl, model.OrderRequest{
 		Dealer: "68db351696b56fcecafbc433",
-		Products: []Product{
+		Products: []model.Product{
 			{
 				ProductId: "68db479a96b56fcecafbc4a4",
 				Name:      "面条2",
