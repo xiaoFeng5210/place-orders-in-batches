@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"order-mock/mock"
 	"order-mock/model"
+	"order-mock/utils"
 	"time"
 )
 
@@ -35,11 +36,12 @@ func CheckMockDataConfig() {
 func LoopAndMock(orderUrl string) {
 	for {
 		currentTime := time.Now()
-		if currentTime.Hour() == 15 && currentTime.Minute() == 43 {
+		if currentTime.Hour() == 7 && currentTime.Minute() == 50 {
 			if len(orderConfigs) > 0 {
 				for i := 0; i < MockCount; i++ {
 					mock.MockAllAndCloseWithConfig(orderUrl, orderConfigs)
 				}
+				utils.Logger.Info("下单全部结束")
 			}
 		}
 		time.Sleep(5 * time.Second)
