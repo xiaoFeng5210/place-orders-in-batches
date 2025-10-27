@@ -6,6 +6,7 @@ import (
 	"order-mock/utils"
 	"os"
 
+	lom "github.com/samber/lo/mutable"
 	"go.uber.org/zap"
 )
 
@@ -47,5 +48,12 @@ func SaveOrderConfig(orderConfigs []OrderRequest) error {
 }
 
 func DeleteOrderConfigItem(orderConfigs []OrderRequest, dealerId string) error {
-
+	kept := lom.Filter(orderConfigs, func(item OrderRequest) bool {
+		return item.Dealer != dealerId
+	})
+	err := SaveOrderConfig(kept)
+	if err != nil {
+		return err
+	}
+	return nil
 }
