@@ -7,10 +7,12 @@ type Product struct {
 }
 
 type OrderRequest struct {
-	Dealer   string    `json:"dealer"`
-	Products []Product `json:"products"`
-	Amount   float64   `json:"amount"`
-	PayType  string    `json:"pay_type"`
+	Dealer     string    `json:"dealer"`
+	DealerName string    `json:"dealer_name"`
+	EnableMock bool      `json:"enable_mock"`
+	Products   []Product `json:"products"`
+	Amount     float64   `json:"amount"`
+	PayType    string    `json:"pay_type"`
 }
 
 type OrderRespData struct {
