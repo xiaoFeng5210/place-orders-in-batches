@@ -28,6 +28,9 @@ func main() {
 
 	engine := gin.Default()
 
+	engine.Static("/assets", "web/dist/assets")
+	engine.StaticFile("/", "web/dist/index.html")
+
 	apiGroup := engine.Group("/api")
 
 	apiGroup.GET("/mock_config", handler.GetMockConfigHandler)
@@ -36,9 +39,9 @@ func main() {
 
 	err = engine.Run("0.0.0.0:3031")
 	if err != nil {
+		utils.Logger.Error("服务启动失败", zap.Error(err))
 		panic(err)
 	}
 	utils.Logger.Info("服务启动成功, 端口: 3031")
 	utils.Logger.Info("环境变量", zap.String("ORDER_URL", orderUrl))
-
 }
