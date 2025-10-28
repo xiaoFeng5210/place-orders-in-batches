@@ -32,11 +32,7 @@ func LoadOrderConfig() ([]model.OrderRequest, error) {
 	if err != nil {
 		return nil, err
 	}
-	// *更新全局变量
-	orderConfigs = currentOrderConfigs
-
 	return currentOrderConfigs, nil
-
 }
 
 func SaveOrderConfig(orderConfigs []model.OrderRequest) error {

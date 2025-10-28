@@ -1,21 +1,12 @@
 package service
 
 import (
-	"fmt"
-	"order-mock/model"
 	"order-mock/utils"
 	"time"
-
-	"sync"
 
 	"order-mock/mock"
 
 	"go.uber.org/zap"
-)
-
-var (
-	orderConfigs []model.OrderRequest
-	lock         sync.Mutex
 )
 
 const (
@@ -23,29 +14,14 @@ const (
 	MockInterval = 5 * time.Second
 )
 
-func CheckMockDataConfig() {
-	for {
-		lock.Lock()
-		_, err := LoadOrderConfig()
-		lock.Unlock()
-		if err != nil {
-			utils.Logger.Error("CheckMockDataConfig Error", zap.Error(err))
-			time.Sleep(5 * time.Second)
-			continue
-		}
-		utils.Logger.Info("读取当前配置数据: ", zap.Any("orderConfigs", orderConfigs))
-		time.Sleep(5 * 60 * time.Second)
-	}
-}
-
 func LoopAndMock(orderUrl string) {
 	for {
 		currentTime := time.Now()
-		fmt.Printf("当前时间: %v:%v\n", currentTime.Hour(), currentTime.Minute())
 		if currentTime.Hour() == 7 && currentTime.Minute() == 50 {
+			utils.Logger.Info("开始执行订单模拟，当前时间: ", zap.Int("hour", currentTime.Hour()), zap.Int("minute", currentTime.Minute()))
 			orderConfigResult, err := LoadOrderConfig()
 			if err != nil {
-				utils.Logger.Error("LoadOrderConfig Error", zap.Error(err))
+				utils.Logger.Error("读取订单配置失败", zap.Error(err))
 				time.Sleep(10 * time.Second)
 				continue
 			}
