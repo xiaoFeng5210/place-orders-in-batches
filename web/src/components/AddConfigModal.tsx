@@ -11,7 +11,7 @@ import {
   message
 } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { OrderConfig, Product } from '../types';
+import type { OrderConfig, Product } from '../types';
 
 interface AddConfigModalProps {
   visible: boolean;

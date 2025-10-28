@@ -24,8 +24,6 @@ func main() {
 	if orderUrl == "" {
 		utils.Logger.Fatal("ORDER_URL environment variable is required")
 	}
-
-	go service.CheckMockDataConfig()
 	go service.LoopAndMock(orderUrl)
 
 	engine := gin.Default()
