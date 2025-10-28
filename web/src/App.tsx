@@ -91,8 +91,7 @@ function App() {
       <Header className="bg-white shadow-sm border-b">
         <div className="flex items-center justify-between h-full max-w-7xl mx-auto px-4">
           <div className="flex items-center space-x-3">
-            <SettingOutlined className="text-2xl text-blue-500" />
-            <Title level={3} className="m-0 text-gray-800">
+            <Title style={{ color: 'white' }} level={3} className="m-0 text-white">
               订单Mock配置管理
             </Title>
           </div>
@@ -124,7 +123,7 @@ function App() {
                   配置列表
                 </Title>
                 <p className="text-gray-500 mt-1">
-                  管理门店订单Mock配置，可以启用或停用特定门店的Mock功能
+                  管理门店订单Mock配置, 可以启用或停用特定门店的Mock功能
                 </p>
               </div>
               <div className="text-sm text-gray-500">

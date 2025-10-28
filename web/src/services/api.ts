@@ -1,6 +1,6 @@
 import type { OrderConfig, ApiResponse, DeleteConfigParams } from '../types';
 
-const API_BASE_URL = 'http://localhost:3031/api';
+const API_BASE_URL = '/api';
 
 // 获取所有配置
 export const getMockConfigs = async (): Promise<OrderConfig[]> => {

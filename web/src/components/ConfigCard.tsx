@@ -16,9 +16,9 @@ const ConfigCard: React.FC<ConfigCardProps> = ({
   onDelete,
   onEdit
 }) => {
-  const handleMockToggle = (checked: boolean) => {
-    onToggleMock(config.dealer, checked);
-  };
+  // const handleMockToggle = (checked: boolean) => {
+  //   onToggleMock(config.dealer, checked);
+  // };
 
   const handleDelete = () => {
     onDelete(config.dealer);
@@ -31,19 +31,19 @@ const ConfigCard: React.FC<ConfigCardProps> = ({
         <div className="flex items-center gap-2">
           <ShopOutlined className="text-blue-500" />
           <span className="font-medium">{config.dealer_name || '未命名门店'}</span>
-          <Tag color={config.enable_mock ? 'green' : 'default'}>
+          {/* <Tag color={config.enable_mock ? 'green' : 'default'}>
             {config.enable_mock ? '已启用' : '已停用'}
-          </Tag>
+          </Tag> */}
         </div>
       }
       extra={
         <Space>
-          <Switch
+          {/* <Switch
             checked={config.enable_mock}
             onChange={handleMockToggle}
             checkedChildren="启用"
             unCheckedChildren="停用"
-          />
+          /> */}
           {onEdit && (
             <Button
               type="text"
@@ -71,13 +71,13 @@ const ConfigCard: React.FC<ConfigCardProps> = ({
     >
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-gray-600">门店ID:</span>
+          <span className="text-gray-600">门店:</span>
           <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded">
             {config.dealer}
           </span>
         </div>
         
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <span className="text-gray-600">订单金额:</span>
           <span className="font-semibold text-green-600">
             ¥{config.amount.toFixed(2)}
@@ -87,10 +87,10 @@ const ConfigCard: React.FC<ConfigCardProps> = ({
         <div className="flex items-center justify-between">
           <span className="text-gray-600">支付方式:</span>
           <span>{config.pay_type || '未设置'}</span>
-        </div>
+        </div> */}
         
         <div>
-          <div className="text-gray-600 mb-2">商品列表:</div>
+          <div className="text-gray-600 mb-2">商品:</div>
           <div className="space-y-1">
             {config.products.map((product, index) => (
               <div
