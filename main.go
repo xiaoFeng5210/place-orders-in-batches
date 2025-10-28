@@ -37,11 +37,13 @@ func main() {
 	apiGroup.POST("/add_dealer", handler.AddDealerConfigHandler)
 	apiGroup.POST("/delete_dealer_config", handler.DeleteDealerConfigHandler)
 
+	utils.Logger.Info("开始启动服务, 端口: 3031")
+	utils.Logger.Info("环境变量", zap.String("ORDER_URL", orderUrl))
+
 	err = engine.Run("0.0.0.0:3031")
+
 	if err != nil {
 		utils.Logger.Error("服务启动失败", zap.Error(err))
 		panic(err)
 	}
-	utils.Logger.Info("服务启动成功, 端口: 3031")
-	utils.Logger.Info("环境变量", zap.String("ORDER_URL", orderUrl))
 }
