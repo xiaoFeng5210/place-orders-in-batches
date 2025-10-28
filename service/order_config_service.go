@@ -72,6 +72,28 @@ func AddDealerConfig(newConfig model.OrderRequest) error {
 	return nil
 }
 
+func UpdateDealerConfig(config model.OrderRequest) error {
+	localeConfig, err := LoadOrderConfig()
+	if err != nil {
+		return err
+	}
+	if len(localeConfig) == 0 {
+		return errors.New("门店配置不存在")
+	}
+	updatedConfig := lo.Map(localeConfig, func(item model.OrderRequest, _ int) model.OrderRequest {
+		if item.Dealer == config.Dealer {
+			return config
+		} else {
+			return item
+		}
+	})
+	err = SaveOrderConfig(updatedConfig)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func DeleteOrderConfigItem(dealerId string) error {
 	readed, err := LoadOrderConfig()
 	if err != nil {
